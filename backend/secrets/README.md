@@ -53,3 +53,5 @@ After training, these are saved to `ml/artifacts/`:
 - XGBoost + SHAP
 - NetworkX + Louvain (graph clustering)
 - OpenRouter (AI reports)
+- - PRIMARY_MODEL: "openai/gpt-oss-120b:free"
+- - FALLBACK_MODEL: "z-ai/glm-4.5-air:free"
