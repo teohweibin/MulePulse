@@ -18,6 +18,10 @@ The live demo runs with built-in mock data when the backend is offline.
 
 ---
 
+## Pitch Deck
+Link🔗: https://drive.google.com/file/d/1lZrA1oyxQ5MlyP5DnsXgpTA5PimhrqaW/view?usp=drive_link
+
+---
 ## Project Structure
 
 ```
