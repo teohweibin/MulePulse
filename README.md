@@ -152,16 +152,4 @@ Transaction Stream → Graph Engine → Feature Extraction → Risk Scoring → 
 
 ---
 
-## NexHack Rubric Alignment
-
-| Judging Area | How MulePulse Addresses It |
-|---|---|
-| Problem Relevance & Impact | Targets scam-loss recovery failure and mule laundering speed with clear banking fraud-ops users |
-| Technical Architecture & Execution | Graph ingestion, feature extraction, XGBoost scoring, AI agent, human approval loop |
-| Market Adoption & Commercial Potential | Banks, e-wallets, payment processors, regtech vendors — fraud-ops copilot model |
-| Innovation & Differentiation | Network-level intelligence beyond single-account AML rules, with explainability and agentic case assembly |
-| Presentation & Demonstration | Focused analyst workflow demonstrable end-to-end within the 7-minute limit |
-
----
-
 See [`docs/PRD.md`](docs/PRD.md) for full product requirements.
