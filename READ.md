@@ -2,6 +2,8 @@
 
 ## How to open the website locally
 
+This step is done after the setup of the backend (refer [backend/README.md](./backend/README.md)
+
 1. move to the backend terminal to open the backend locally
 
 cd backend
