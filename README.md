@@ -1,4 +1,4 @@
-# MulePulse
+# MulePulse - by Team HAHA
 
 **Fraud intelligence workspace for pre-emptive mule network detection.**
 
