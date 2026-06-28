@@ -12,7 +12,7 @@ MulePulse helps bank fraud analysts detect coordinated mule account networks bef
 
 > **No setup required** — open directly in your browser:
 >
-> 🔗 **[https://teohweibin.github.io/Nexhack/]([https://teohweibin.github.io/Nexhack/](https://teohweibin.github.io/MulePulse/))**
+> 🔗 https://teohweibin.github.io/MulePulse/ 
 
 The live demo runs with built-in mock data when the backend is offline.
 
