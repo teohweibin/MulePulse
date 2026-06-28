@@ -1,4 +1,4 @@
-changed app.js and dashboard.html(this file one only change the thresold value range)
+changed app.js and dashboard.html(this file one only change the thresold value range) only
 
 #app.js — all changes from original
 1. Backend connection added
