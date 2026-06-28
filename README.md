@@ -48,6 +48,8 @@ ML artifacts are saved to `backend/ml/artifacts/`:
 
 ### Step 3 — Start the backend
 
+Open a terminal in the `backend/` folder:
+
 ```bash
 cd backend
 docker compose up --build
@@ -58,13 +60,16 @@ docker compose up --build
 
 ### Step 4 — Seed test data
 
+Open a **new terminal** (separate from the Docker process) and run:
+
 ```bash
+cd backend
 python ml/data_gen.py --seed-api
 ```
 
 ### Step 5 — Serve the frontend
 
-Open a new terminal from the root of the repo:
+Open another new terminal from the **root of the repo**:
 
 ```bash
 python -m http.server 5500
