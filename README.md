@@ -1,10 +1,10 @@
 # MulePulse
 
-**Fraud intelligence workspace for pre-emptive mule network detection.**
+**AI-powered fraud intelligence workspace for pre-emptive mule network detection.**
 
 Built for **NexHack 2026 Track 2: Fintech Risk & Fraud Intelligence**.
 
-MulePulse helps bank fraud analysts detect coordinated mule account networks before victim reports arrive — by analyzing transaction graphs, velocity patterns, fan-in/fan-out behavior, and proximity to known mule repositories.
+MulePulse helps bank fraud analysts detect coordinated mule account networks before victim reports arrive — by using an autonomous agent to analyze transaction graphs, velocity patterns, fan-in/fan-out behavior, and proximity to known mule repositories.
 
 ---
 
