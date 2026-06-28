@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MulePulse — Case Dashboard</title>
+    <meta name="description" content="Live fraud investigation dashboard. Review mule network cases, follow money flows, and approve analyst actions." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <a class="topbar-brand" href="index.html" aria-label="Back to MulePulse home">
+        <span class="topbar-mark">M</span>
+        <span>MulePulse</span>
+      </a>
+      <nav class="topbar-tabs" aria-label="Dashboard tabs">
+        <button class="tab active" data-tab="workspace" type="button" id="tab-workspace">Case workspace</button>
+        <button class="tab" data-tab="queue" type="button" id="tab-queue">Risk queue</button>
+      </nav>
+      <div class="topbar-right">
+        <span class="live-badge" aria-label="Live data">● Live</span>
+        <button class="refresh-btn" id="runAgent" type="button">Refresh AI case file</button>
+        <a class="back-link" href="index.html">← Back to overview</a>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-layout">
+
+      <!-- SIDEBAR: Guide Steps + Queue -->
+      <aside class="sidebar" aria-label="Case navigation">
+
+        <!-- Metrics strip -->
+        <section class="metric-strip" aria-label="Fraud intelligence summary">
+          <div class="metric-chip">
+            <span>Urgency</span>
+            <strong id="networkRisk">91</strong>
+          </div>
+          <div class="metric-chip">
+            <span>Cases</span>
+            <strong id="flaggedCount">4</strong>
+          </div>
+          <div class="metric-chip">
+            <span>Exposed</span>
+            <strong id="fundsAtRisk">RM 1.42M</strong>
+          </div>
+          <div class="metric-chip">
+            <span>Pass-through</span>
+            <strong id="medianVelocity">17m</strong>
+          </div>
+        </section>
+
+        <!-- Alert threshold -->
+        <section class="threshold-panel" aria-label="Alert comfort controls">
+          <div class="threshold-header">
+            <label for="thresholdRange">Alert comfort level</label>
+            <span id="thresholdValue" class="threshold-num">70</span>
+          </div>
+          <input id="thresholdRange" type="range" min="10" max="95" value="20" />
+          <div class="threshold-foot">
+            <span id="alertVolume">42 cases/day</span>
+            <span id="modelTradeoff">Catches more fraud · manageable workload</span>
+          </div>
+        </section>
+
+        <!-- Case queue -->
+        <section class="queue-section" aria-labelledby="queueTitle">
+          <div class="sidebar-heading">
+            <p class="sidebar-eyebrow">Start here</p>
+            <h2 id="queueTitle">Cases to review</h2>
+          </div>
+          <div id="clusterQueue" class="cluster-list" role="list"></div>
+        </section>
+
+        <!-- Guide steps -->
+        <section class="guide-section" aria-label="Guided demo steps">
+          <div class="sidebar-heading">
+            <p class="sidebar-eyebrow">Demo walkthrough</p>
+            <h2>Step guide</h2>
+          </div>
+          <div class="guide-steps">
+            <button class="guide-step active" type="button" data-step="1" id="step-1">
+              <span class="step-chip">1</span>
+              <div>
+                <strong>Spot the urgent case</strong>
+                <small>Prioritize the highest-risk cluster.</small>
+              </div>
+            </button>
+            <button class="guide-step" type="button" data-step="2" id="step-2">
+              <span class="step-chip">2</span>
+              <div>
+                <strong>Follow the flow</strong>
+                <small>See how money moves through accounts.</small>
+              </div>
+            </button>
+            <button class="guide-step" type="button" data-step="3" id="step-3">
+              <span class="step-chip">3</span>
+              <div>
+                <strong>Read the reason</strong>
+                <small>Understand the AI explanation.</small>
+              </div>
+            </button>
+            <button class="guide-step" type="button" data-step="4" id="step-4">
+              <span class="step-chip">4</span>
+              <div>
+                <strong>Approve action</strong>
+                <small>Choose monitor, escalate, or freeze.</small>
+              </div>
+            </button>
+          </div>
+        </section>
+
+      </aside>
+
+      <!-- WORKSPACE PANEL -->
+      <div class="workspace">
+
+        <!-- Workspace header -->
+        <div class="ws-header">
+          <div>
+            <p class="ws-eyebrow">Case workspace</p>
+            <h1 id="guidedTitle" class="ws-title">Spot the urgent case</h1>
+            <p id="guidedText" class="ws-desc">MulePulse sorts suspicious clusters by network risk so a non-technical reviewer can start with the most urgent case first.</p>
+          </div>
+        </div>
+
+        <!-- Graph + Case side by side -->
+        <div class="grid-two">
+
+          <!-- Money flow graph -->
+          <section class="panel graph-panel" aria-labelledby="graphTitle">
+            <div class="panel-head">
+              <div>
+                <p class="panel-eyebrow">Money flow map</p>
+                <h2 id="graphTitle" class="panel-title">Who sent money where</h2>
+              </div>
+              <div class="legend" aria-label="Node legend">
+                <span><i class="dot dot-risk"></i>High risk</span>
+                <span><i class="dot dot-watch"></i>Watch</span>
+                <span><i class="dot dot-known"></i>Known mule</span>
+              </div>
+            </div>
+            <div class="graph-wrap">
+              <svg id="networkGraph" viewBox="0 0 760 440" role="img" aria-label="Mule network transaction graph"></svg>
+            </div>
+          </section>
+
+          <!-- AI Case file -->
+          <section class="panel case-panel" aria-labelledby="caseTitle">
+            <div class="panel-head">
+              <div>
+                <p class="panel-eyebrow">AI case file</p>
+                <h2 id="caseTitle" class="panel-title">Recommended next step</h2>
+              </div>
+              <span id="caseBadge" class="case-badge">Escalate</span>
+            </div>
+            <div id="caseDetails" class="case-details"></div>
+            <div class="action-row" aria-label="Analyst decisions">
+              <button class="decision-btn monitor" type="button" data-action="Monitor" id="btn-monitor">Monitor</button>
+              <button class="decision-btn escalate" type="button" data-action="Escalate" id="btn-escalate">Escalate</button>
+              <button class="decision-btn freeze" type="button" data-action="Freeze" id="btn-freeze">Freeze accounts</button>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Explain + Timeline side by side -->
+        <div class="grid-two grid-two-sm">
+
+          <!-- Why AI is concerned -->
+          <section class="panel explain-panel" aria-labelledby="explainTitle">
+            <div class="panel-head">
+              <div>
+                <p class="panel-eyebrow">Why the AI is concerned</p>
+                <h2 id="explainTitle" class="panel-title">Plain-language explanation</h2>
+              </div>
+            </div>
+            <p id="explanationText" class="explanation-text"></p>
+            <div id="featureList" class="feature-list"></div>
+          </section>
+
+          <!-- Decision history -->
+          <section class="panel timeline-panel" aria-labelledby="timelineTitle">
+            <div class="panel-head">
+              <div>
+                <p class="panel-eyebrow">Proof of control</p>
+                <h2 id="timelineTitle" class="panel-title">Decision history</h2>
+              </div>
+            </div>
+            <ol id="activityLog" class="timeline" aria-label="Activity log"></ol>
+          </section>
+
+        </div>
+
+      </div>
+
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
