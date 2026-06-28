@@ -8,24 +8,81 @@ MulePulse helps bank fraud analysts detect coordinated mule account networks bef
 
 ---
 
+## Live Demo
+
+> **No setup required** — open directly in your browser:
+>
+> 🔗 **[https://teohweibin.github.io/Nexhack/](https://teohweibin.github.io/Nexhack/)**
+
+The live demo runs with built-in mock data when the backend is offline.
+
+---
+
 ## Project Structure
 
 ```
 Nexhack/
 ├── frontend_edited/    # Analyst dashboard + landing page (connected to backend)
-└── backend/            # FastAPI + ML backend
-    ├── app/            # API application
-    ├── ml/             # ML training pipeline
-    ├── alembic/        # Database migrations
-    ├── secrets/        # API keys & config (not committed)
-    ├── Dockerfile
-    ├── docker-compose.yml
-    └── requirements.txt
+├── backend/            # FastAPI + ML backend
+│   ├── app/            # API application
+│   ├── ml/             # ML training pipeline
+│   ├── alembic/        # Database migrations
+│   ├── secrets/        # API keys & config (not committed)
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   └── requirements.txt
+├── start.bat           # One-click startup (Windows)
+└── start.sh            # One-click startup (Mac / Linux)
 ```
 
 ---
 
-## Quick Start
+## Quick Start — Option A: One-click script (Recommended)
+
+Requires: **Docker Desktop**, **Python 3.11+**
+
+**Windows:**
+```bat
+start.bat
+```
+
+**Mac / Linux:**
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+The script will automatically:
+1. Train the ML model on first run
+2. Start the backend via Docker
+3. Seed test data
+4. Open `http://localhost:5500/frontend_edited/` in your browser
+
+---
+
+## Quick Start — Option B: Docker only (One command)
+
+After secrets are configured:
+
+```bash
+cd backend
+docker compose up --build
+```
+
+This starts:
+- **API** at `http://localhost:8000`
+- **Frontend** at `http://localhost:5500` (served by nginx)
+
+Then in a new terminal, seed the data:
+
+```bash
+cd backend
+python ml/data_gen.py --seed-api
+```
+
+---
+
+## Quick Start — Option C: Manual setup
 
 ### Step 1 — Set up secrets
 
@@ -41,14 +98,7 @@ python ml/feature_pipeline.py
 python ml/train.py
 ```
 
-ML artifacts are saved to `backend/ml/artifacts/`:
-- `mule_scorer.pkl` — trained XGBoost model
-- `feature_names.pkl` — feature list
-- `shap_summary.png` — SHAP feature importance chart
-
 ### Step 3 — Start the backend
-
-Open a terminal in the `backend/` folder:
 
 ```bash
 cd backend
@@ -60,7 +110,7 @@ docker compose up --build
 
 ### Step 4 — Seed test data
 
-Open a **new terminal** (separate from the Docker process) and run:
+Open a **new terminal** (separate from the Docker process):
 
 ```bash
 cd backend

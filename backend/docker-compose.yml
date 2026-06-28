@@ -47,6 +47,15 @@ services:
       - .:/app
     mem_limit: 2g
 
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "5500:80"
+    volumes:
+      - ../frontend_edited:/usr/share/nginx/html:ro
+    networks:
+      - internal
+
 secrets:
   openrouter_key:
     file: ./secrets/openrouter_key.txt
