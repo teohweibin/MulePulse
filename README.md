@@ -20,46 +20,50 @@ The live demo runs with built-in mock data when the backend is offline.
 
 ## The Problem
 
-Banks lose billions every year to money mule networks — but most AML systems evaluate accounts **in isolation**, one transaction at a time. Mule networks exploit this by splitting funds across dozens of accounts, keeping each individual transaction below rule thresholds.
+Malaysia's current counter-fraud response excels at reactive tracing — but **post-scam fund recovery has become a critical failure point** due to accelerating mule networks.
 
-**The strongest fraud signal is at the network level**, not the account level:
-- Fast pass-through behavior across chains of accounts
-- Coordinated fan-in / fan-out patterns
-- Shared device IDs, IP addresses, or phone numbers across accounts
-- Proximity to previously confirmed mule accounts
+| Metric | Figure |
+|---|---|
+| Cumulative Fraud Losses (2023–2025) | **RM 5.62B** — RM1.28B (2023) → RM1.57B (2024) → RM2.77B (2025) |
+| Active Mule Accounts in 2025 | **87,209** — a 70% YoY acceleration from 51,302 in 2024 |
+| Scam Fund Recovery Rate | **6%** — only RM34M recovered from RM542M reported losses in 2025 |
 
-**The result:** Banks take an average of **47+ days** to detect an active mule network. By then, funds are gone, victims have filed reports, and regulatory exposure has already occurred.
+**The Blind Spot:**
+In **95% of Malaysian scams**, victims knowingly authorize transfers. The outbound transaction appears legitimate to isolated, bank-level rule engines.
 
-MulePulse fills the **missing layer** between raw transaction monitoring and post-report fund tracing: **pre-emptive network discovery with explainable, human-approved analyst workflows**.
+**The True Signal:**
+The fraud signal resides on the *receiving side* — hidden within the **structure, velocity, and fan-out behaviour** of the mule network. Most AML systems evaluate accounts in isolation and miss this entirely.
+
+MulePulse fills the **missing layer** between raw transaction monitoring and post-report fund tracing: **pre-emptive mule network discovery with explainable, human-approved analyst workflows**.
 
 ---
 
 ## Solution
 
-MulePulse is an **analyst-facing fraud intelligence workspace** that detects coordinated mule account networks *before* victim reports arrive.
+MulePulse is an **analyst-facing fraud intelligence workspace** that detects coordinated mule account networks *before* victim reports arrive — built as a four-layer pipeline:
 
 ```
 Transaction Stream
        │
        ▼
-  Graph Engine ──────────────────────────────────────────────────┐
-  (NetworkX + Louvain)                                           │
-  Builds directed time-aware account graph                       │
-       │                                                         │
-       ▼                                                         │
-  Feature Extraction                                             │
-  Fan-in, Fan-out, Pass-through velocity,                        │
-  Shared identifiers, Mule proximity score                       │
-       │                                                         │
-       ▼                                                         │
-  Risk Scoring (XGBoost + SHAP)                                  │
-  Account-level + cluster-level score                            │
-  Threshold controls & precision/recall visibility               │
-       │                                                         │
-       ▼                                                         │
-  AI Investigation Agent (LLM via OpenRouter) ◄─────────────────┘
-  Case-file generation, plain-language explanation,
-  recommended action (Monitor / Escalate / Freeze)
+  Layer 1: Transaction Graph Engine
+  Ingests streams to build directed, time-aware account graphs.
+  Edges weighted by velocity and time-decay.
+       │
+       ▼
+  Layer 2: Suspicious Pattern Extraction
+  Fan-in, Fan-out, Pass-through velocity signals.
+  Community detection to surface entire coordinated rings.
+       │
+       ▼
+  Layer 3: Mule Risk Scoring (XGBoost + SHAP)
+  Combines graph features into calibrated risk scores.
+  Evaluates entire clusters simultaneously with tunable thresholds.
+       │
+       ▼
+  Layer 4: AI Investigation Agent (LLM via OpenRouter)
+  Auto-assembles case files with plain-language, explainable narratives.
+  Recommends actions; explicitly requires human analyst approval.
        │
        ▼
   Analyst Approval ──► Case Log ──► Feedback Loop ──► Model Retraining
@@ -79,26 +83,30 @@ Transaction Stream
 | 💡 SHAP Explainability | Every score has a plain-language breakdown — "flagged primarily because: fan-out velocity 3× normal, shared device ID with confirmed mule" |
 | 🎚️ Threshold Tuning | Analysts adjust sensitivity with real-time precision/recall trade-off visibility |
 | ✅ Human-in-the-Loop | Monitor / Escalate / Freeze actions are always analyst-approved and logged |
-| 🔄 Feedback Loop | Analyst decisions are captured and feed back into future model scoring |
+| 🔄 Feedback Loop | Analyst decisions captured and fed back into future model scoring |
 
 ---
 
 ## Target Market
 
-### Primary Buyers
+### Primary Buyer: National Central Operator (PayNet / NFP)
 
-| Segment | Pain Point | Why MulePulse |
+MulePulse serves a **single strategic buyer: PayNet**, the national Central Operator — delivering simultaneous, cross-institutional protection for the entire Malaysian financial market.
+
+**Why Central Operator, not individual banks?**
+
+| Problem | Why Individual FIs Can't Solve It | Why PayNet Can |
 |---|---|---|
-| **Tier 1 & 2 Banks** | High SAR filing cost; slow mule detection | Network-level pre-emptive detection before victim reports |
-| **Digital Banks / Neobanks** | Lightweight fraud stack; no graph analytics | Drop-in fraud intelligence layer, no core system replacement |
-| **E-wallet Providers** | Fast fund movement; peer-to-peer abuse | Real-time fan-out pattern detection across wallet accounts |
-| **Payment Processors** | Cross-bank mule routing | Pass-through velocity and proximity-to-mule scoring |
-| **RegTech Vendors** | Need differentiated AML product | White-label graph intelligence layer |
+| Mule syndicates **fragment across multiple institutions** | Each bank only sees its own slice | PayNet has lawful, cross-institutional visibility |
+| Mule networks **deliberately stay below per-bank thresholds** | Per-bank rules miss the network | Cross-bank graph reveals the full ring |
+| **One procurement → system-wide protection** | Each bank must buy separately | One deployment protects every participating bank, e-wallet, and consumer |
+
+Individual FIs act as **supporting data partners**. MulePulse acts as the **missing pre-emptive discovery layer** atop the existing National Fraud Portal (NFP) stack — not a replacement for it.
 
 ### Positioning — What MulePulse Is NOT
 
 MulePulse is **not** a replacement for core fraud engines (Featurespace, FICO, SAS AML).
-It is a **pre-emptive investigation layer** deployed alongside existing systems — surfacing network-level risk that rule engines miss entirely.
+It is a **pre-emptive investigation layer** deployed *above* existing systems — surfacing network-level risk that rule engines miss entirely.
 
 ---
 
@@ -113,56 +121,65 @@ It is a **pre-emptive investigation layer** deployed alongside existing systems 
 
 ### The Network Effect Moat
 
-The more institutions that contribute confirmed mule labels to the shared mule repository, the stronger the proximity-to-mule signal becomes for every participant. **No individual bank's rule engine can replicate a consortium-level mule intelligence network.**
+As more institutions contribute confirmed mule labels through the NFP, the proximity-to-mule signal strengthens for every participant. **No individual bank's rule engine can replicate a national-level mule intelligence network.**
 
 ---
 
 ## Business Model
 
-| Model | Target | Description |
-|---|---|---|
-| **Annual SaaS License** | Banks & digital banks | Per-institution pricing based on transaction volume |
-| **Per-seat Analyst Workspace** | Smaller fintechs | Per fraud analyst seat pricing |
-| **Pilot Package** | New customers | Synthetic/historical transaction replay + model calibration |
-| **Enterprise Deployment** | Large banks | Private cloud or on-premise with full data controls |
-
----
-
-## Regulatory Compliance Framing
-
-MulePulse is designed to align with active regulatory obligations in Southeast Asia:
-
-| Regulation | Relevance |
+| Model | Description |
 |---|---|
-| **MAS Notice 626** (Singapore) | AML/CFT controls for banks — mule account detection directly supports suspicious transaction reporting obligations |
-| **BNM RMiT** (Malaysia) | Risk Management in Technology — graph-based detection with explainability supports audit trail requirements |
-| **JFMC Mule Reporting** (Malaysia) | Joint Financial Mule Committee mule reporting framework — MulePulse outputs map to JFMC reporting fields |
-| **FATF Recommendation 16** | Wire transfer traceability — MulePulse's transaction chain reconstruction supports FATF travel rule compliance |
-
-MulePulse positions as a **compliance accelerator** — making it easier for banks to meet existing regulatory obligations, not just a nice-to-have analytics tool.
+| **Central Operator License** | Single enterprise license to PayNet — covers all participating institutions |
+| **Pilot Package** | Backtest on operator's historical data + confirmed-mule repository, quantifying lead time gained vs. victim reports |
+| **Shadow Mode Evaluation** | Score live transactions in parallel with no enforcement action — validates accuracy before go-live |
+| **Enterprise Private Deployment** | On-premise or private cloud with full data controls, PDPA-compliant |
 
 ---
 
-## Go-to-Market Roadmap
+## Regulatory Compliance
+
+MulePulse is designed to align with Malaysia's active regulatory obligations:
+
+### Operational Governance (BNM)
+
+- Positioned within the **PayNet / NFP operator tier under BNM oversight**
+- Inherits the lawful basis used to share mule and fraud data across institutions
+- Rigorously conforms to **BNM Risk Management in Technology (RMiT)** standards
+
+### Data Protection (PDPA 2010)
+
+- Processing permitted under the **crime-prevention and detection exemption (Section 45, PDPA 2010)**
+- Built to meet PDPA's **2024 security, breach-notification, and DPO obligations**
+
+MulePulse positions as a **compliance accelerator** — making it easier for the operator and FIs to meet existing regulatory obligations, not just an analytics tool.
+
+---
+
+## Implementation Plan
 
 ```
-Phase 1 — Pilot (0–6 months)
-  ● Deploy with 1 regional bank (anonymized historical data)
-  ● 50 fraud analysts on-boarded
-  ● On-premise or private cloud deployment
-  ● Baseline: reduce triage time per cluster from hours to minutes
+Phase 1 — Proof of Value on Historical Data (3–4 months)
+  ● Backtest on PayNet's historical data and confirmed-mule repository (NFP)
+  ● NFP mule database powers detection as training labels, graph anchors, and backtest ground truth
+  ● Quantify lead time gained ahead of victim reports
+  ● Engage early high-volume reference partners
 
-Phase 2 — Integration (6–18 months)
-  ● API integration with existing fraud case management systems
-  ● Expand to 3+ banks and 1 e-wallet provider
-  ● Add near-real-time stream ingestion
-  ● Analyst feedback loop drives model recalibration
+Phase 2 — Shadow Mode Evaluation on Live Data (4–6 months)
+  ● Score live transactions in parallel — no enforcement action taken
+  ● Validates accuracy, false positives, and timing before production
+  ● Existing fraud-response process stays fully authoritative throughout
+  ● Broaden participation to highest-volume institutions for maximum early coverage
 
-Phase 3 — Consortium (18–36 months)
-  ● Cross-institution shared mule intelligence network
-  ● Confirmed mule labels shared (privacy-preserving) across participants
-  ● Expand typologies: scam prevention, AML, account-opening risk
-  ● Explore PayNet NFP integration as external enrichment source
+Phase 3 — Production Deployment & Analyst Workflow (6 months)
+  ● AI Investigation Agent delivers explainable case files to operator-level case officers
+  ● Every irreversible action requires human approval — never autonomous, fully logged for audit
+  ● Extend participation to mid-sized and smaller institutions for full-breadth coverage
+
+Phase 4 — Continuous Learning & Operational Maturity (ongoing)
+  ● Analyst decisions retrain the model — sharper precision, fewer repeat false positives
+  ● Confirmed mules enrich the NFP database — operator's ground truth and model improve together
+  ● Full national coverage reached; network effect matures as visibility completes
+  ● De-risked by design: institutions onboard through existing NFP connections, phase by phase
 ```
 
 ---
@@ -193,7 +210,7 @@ Alembic migration history is committed, showing the full database evolution. The
 
 ### Feedback Loop
 
-Analyst decisions (Monitor / Escalate / Freeze) are logged to the case activity log. These labels become ground-truth feedback for future model retraining — closing the loop from analyst judgment back to model calibration.
+Analyst decisions (Monitor / Escalate / Freeze) are logged to the case activity log. These labels become ground-truth feedback for future model retraining — closing the loop from analyst judgment back to model calibration, and enriching the NFP confirmed-mule repository over time.
 
 ---
 
