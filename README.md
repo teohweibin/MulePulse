@@ -26,7 +26,7 @@ Malaysia's current counter-fraud response excels at reactive tracing — but **p
 |---|---|
 | Cumulative Fraud Losses (2023–2025) | **RM 5.62B** — RM1.28B (2023) → RM1.57B (2024) → RM2.77B (2025) |
 | Active Mule Accounts in 2025 | **87,209** — a 70% YoY acceleration from 51,302 in 2024 |
-| Scam Fund Recovery Rate | **6%** — only RM34M recovered from RM542M reported losses in 2025 |
+| Scam Fund Recovery Rate (2025) | **<2%** — only RM34M intercepted out of RM2.77B in nationwide losses |
 
 **The Blind Spot:**
 In **95% of Malaysian scams**, victims knowingly authorize transfers. The outbound transaction appears legitimate to isolated, bank-level rule engines.
