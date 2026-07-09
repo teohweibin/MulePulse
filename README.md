@@ -14,7 +14,7 @@ Built for **NexHack 2026 Track 2: Fintech Risk & Fraud Intelligence**.
 
 The live demo runs with built-in mock data when the backend is offline.
 
-📄 **Pitch Deck:** https://drive.google.com/file/d/1lZrA1oyxQ5MlyP5DnsXgpTA5PimhrqaW/view?usp=drive_link
+📄 **Pitch Deck:** https://docs.google.com/presentation/d/1WJ7dMpEiq6R-yJNlH0SFPmtVOjYyF7s4/edit?usp=sharing&ouid=115700818611620777414&rtpof=true&sd=true
 
 ---
 
