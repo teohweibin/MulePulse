@@ -1,4 +1,4 @@
-# MulePulse
+# MulePulse - by Team HAHA
 
 **AI-powered fraud intelligence workspace for pre-emptive mule network detection.**
 
