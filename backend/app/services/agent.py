@@ -351,6 +351,24 @@ class InvestigationAgent:
                     logger.error(f"'{used_model}' JSON parse failed: {e}\nRaw: {raw_text[:400]}")
                     raise HTTPException(500, "Agent produced invalid JSON")
 
+                # Map model phrasing variations back to the strict enum before validating —
+                # models occasionally say "proximity_to_known_mule" instead of "proximity", etc.
+                _PATTERN_ALIASES = {
+                    "proximity_to_known_mule": "proximity",
+                    "proximity_to_mule": "proximity",
+                    "known_mule_proximity": "proximity",
+                    "mule_proximity": "proximity",
+                    "fanin": "fan_in",
+                    "fanout": "fan_out",
+                    "passthrough": "pass_through",
+                    "pass-through": "pass_through",
+                }
+
+                if "pattern_detected" in report and isinstance(report["pattern_detected"], list):
+                    report["pattern_detected"] = [
+                        _PATTERN_ALIASES.get(p, p) for p in report["pattern_detected"]
+                    ]
+              
                 try:
                     jsonschema.validate(report, REPORT_SCHEMA)
                 except jsonschema.ValidationError as e:

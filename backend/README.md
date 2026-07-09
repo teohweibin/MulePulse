@@ -5,9 +5,9 @@ Money mule detection system using XGBoost + FastAPI + AI-generated risk reports.
 ## Quick Start
 
 ### 1. Create secrets
-See `secrets/README.md` for what to put in each file.
+See `secrets/IMPORTANT.md` for what to put in each file.
 
-### 2. Train the ML model
+### 2. Train the ML model (and download requirements :)
 ```bash
 pip install -r requirements.txt
 python ml/data_gen.py
@@ -20,7 +20,6 @@ python ml/train.py
 docker compose up --build
 ```
 
-API is live at http://localhost:8000  
 Swagger docs at http://localhost:8000/docs
 
 ### 4. Seed test data
