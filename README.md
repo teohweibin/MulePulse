@@ -148,7 +148,7 @@ MulePulse is designed to align with Malaysia's active regulatory obligations:
 
 ### Data Protection (PDPA 2010)
 
-- Processing permitted under the **crime-prevention and detection exemption (Section 45, PDPA 2010)**
+- Processing permitted under the **crime-prevention and detection exemption (PDPA 2010)**
 - Built to meet PDPA's **2024 security, breach-notification, and DPO obligations**
 
 MulePulse positions as a **compliance accelerator** — making it easier for the operator and FIs to meet existing regulatory obligations, not just an analytics tool.
